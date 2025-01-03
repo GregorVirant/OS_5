@@ -8,7 +8,7 @@
 class UI {
 private:
     std::vector<std::string> menus;
-    int currentMenu = 0;
+    size_t currentMenu = 0;
     void updateMenu();
     // std::string menu;
     // std::string menuInput;
