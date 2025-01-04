@@ -8,7 +8,7 @@ CXXFLAGS = -std=c++11 -Wall
 LDFLAGS = -lncurses
 
 # Makefile settings - Can be customized.
-APPNAME = gvol
+APPNAME = gcal
 EXT = .cpp
 SRCDIR = source
 OBJDIR = obj

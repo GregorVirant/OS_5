@@ -1,13 +1,13 @@
-//#include <ncurses.h>
-#include "ui.h"
+#include "include/Events.h"
 using namespace std;
 
 int main() {
-    // UI ui;
-    // bool running = true;
-    // while (running){
-    //     ui.handleInput(running);
-    // }
-    // return 0;
-    
+    Events events;
+    events.addEvent(Event("Event 1",DateTime(4,1,2025,12,12,52)));
+    events.addEvent(Event("Event 2",DateTime(4,1,2025,12,12,58)));
+    //cout << events.toString();
+    events.writeToFile("DB");
+    Events e2 ("DB");
+    cout<<e2.toStringForWriting();
+
 }
