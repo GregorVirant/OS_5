@@ -16,6 +16,7 @@ public:
     std::string toString() const;
     std::string toStringForWriting() const;
     bool writeToFile(std::string path) const;
+    
 };
 
 #endif

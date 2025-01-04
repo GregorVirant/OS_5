@@ -26,7 +26,7 @@ Events::Events(std::string path){
     while(std::getline(file,line)){
         arg += line+"\n";
         lines++;
-        if(lines>=2){
+        if(lines>=3){
             try{
                 Event e1 (arg);
                 eventList.push_back(e1);
