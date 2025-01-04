@@ -1,12 +1,11 @@
-#include "include/Events.h"
-#include <fcntl.h>
+#include "include/Alarms.h"
 #include <unistd.h>
 #include <sys/file.h>
 #include <fstream>
 #include <iostream>
 
-Events::Events(){}
-Events::Events(std::string path){
+Alarms::Alarms(){}
+Alarms::Alarms(std::string path){
     int fd = open(path.c_str(),O_RDONLY);
     if (fd == -1){
         std::cerr<<"Error openning file for reading\n";
@@ -18,7 +17,7 @@ Events::Events(std::string path){
         return;
     }
     std::ifstream file(path);
-    
+
     int lines = 0;
     std::string arg;
     std::string line;
@@ -26,10 +25,18 @@ Events::Events(std::string path){
     while(std::getline(file,line)){
         arg += line+"\n";
         lines++;
-        if(lines>=3){
+        if(lines>=4){
             try{
-                Event e1 (arg);
-                eventList.push_back(e1);
+                try {
+                    Alarm e1 (arg);
+                    alarmList.push_back(e1);
+                }
+                catch (std::exception& e){
+                    std::cerr<<"Creating alarms from file failed: "<<e.what()<<"\n";
+                    flock(fd,LOCK_UN);
+                    close(fd);
+                    return;
+                }
             }
             catch (std::exception& e){
                 std::cerr<<"Creating even from \"" << arg  <<"\" failed: "<< e.what();
@@ -44,34 +51,33 @@ Events::Events(std::string path){
     flock(fd,LOCK_UN);
     close(fd);
 }
-
-void Events::addEvent(Event e){
-    eventList.push_back(e);
+void Alarms::addAlarm(Alarm alarm){
+    alarmList.push_back(alarm);
 }
-void Events::addEvent(std::string str){
-    try{
-        Event ev(str);
-        eventList.push_back(ev);
+void Alarms::addAlarm(std::string alarmString){
+        try{
+        Alarm ev(alarmString);
+        alarmList.push_back(ev);
     }
     catch(std::exception& e){
-        std::cerr<<"Adding event through string failed "<<e.what();
+        std::cerr<<"Adding alarm through string failed "<<e.what();
     }
-};
-std::string Events::toString() const {
+}
+std::string Alarms::toString() const{
     std::string out;
-    for (auto event : eventList){
+    for (auto event : alarmList){
         out += event.toString() + "\n\n";
     }
     return out;
 }
-std::string Events::toStringForWriting() const {
+std::string Alarms::toStringForWriting() const{
     std::string out;
-    for (auto event : eventList){
+    for (auto event : alarmList){
         out += event.toStringForWriting() + "\n";
     }
     return out;
 }
-bool Events::writeToFile(std::string path) const {
+bool Alarms::writeToFile(std::string path) const{
     int fd = open(path.c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0644);
     if (fd == -1){
         std::cerr<<"Error opening the file. \n";
