@@ -23,7 +23,7 @@ UI::UI(){
     ss.str("");
     ss.clear();
     std::cout<<ss.str()<<"\n";
-    ss<<"Gregas alarm sercvice:\n\n";
+    ss<<"Gregas alarm sercvice:\n";
     ss<<"Creating new alarm.\n";
     // ss<<"Input volume:\n";
     // ss<<"  1 => increase by 10%\n";
@@ -94,6 +94,98 @@ void UI::handleInput(bool &running,Alarms a){
         //a.alarmList
         //printw("%s",a.toString().c_str());
     }
+    if (currentMenu == 1){
+        scrollok(stdscr, FALSE);
+        
+        /*    
+        std::string title;
+        Time time;
+        std::vector <bool> days;
+        bool repeat;
+        bool enabled;
+        */
+
+        if (choice_menu_new == 0){
+            attron(A_REVERSE);
+            mvprintw(4,0,"%s","Title: \n\n");
+            attroff(A_REVERSE);
+        }
+        else mvprintw(4,0,"%s","Title: \n\n");
+
+        if (choice_menu_new == 1){
+            attron(A_REVERSE);
+            printw("%s","Time: \n\n");
+            attroff(A_REVERSE);
+        }
+        else printw("%s","Time: \n\n");
+
+        if (choice_menu_new == 2){
+            attron(A_REVERSE);
+            printw("%s","SUN  ");
+            attroff(A_REVERSE);
+        }
+        else printw("%s","SUN  ");
+        if (choice_menu_new == 3){
+            attron(A_REVERSE);
+            printw("%s","MON  ");
+            attroff(A_REVERSE);
+        }
+        else printw("%s","MON  ");
+        if (choice_menu_new == 4){
+            attron(A_REVERSE);
+            printw("%s","TUE  ");
+            attroff(A_REVERSE);
+        }
+        else printw("%s","TUE  ");
+        if (choice_menu_new == 5){
+            attron(A_REVERSE);
+            printw("%s","WED  ");
+            attroff(A_REVERSE);
+        }
+        else printw("%s","WED  ");
+        if (choice_menu_new == 6){
+            attron(A_REVERSE);
+            printw("%s","THU  ");
+            attroff(A_REVERSE);
+        }
+        else printw("%s","THU  ");
+        if (choice_menu_new == 7){
+            attron(A_REVERSE);
+            printw("%s","FRI  ");
+            attroff(A_REVERSE);
+        }
+        else printw("%s","FRI  ");
+        if (choice_menu_new == 8){
+            attron(A_REVERSE);
+            printw("%s","SAT\n\n");
+            attroff(A_REVERSE);
+        }
+        else printw("%s","SAT\n\n");
+        if (choice_menu_new == 9){
+            attron(A_REVERSE);
+            printw("%s","REAPEAT   ");
+            attroff(A_REVERSE);
+        }
+        else printw("%s","REAPEAT   ");
+        if (choice_menu_new == 10){
+            attron(A_REVERSE);
+            printw("%s","ENABLED\n\n");
+            attroff(A_REVERSE);
+        }
+        else printw("%s","ENABLED\n\n");
+        if (choice_menu_new == 11){
+            attron(A_REVERSE);
+            printw("%s","SAVE   ");
+            attroff(A_REVERSE);
+        }
+        else printw("%s","SAVE   ");
+        if (choice_menu_new == 12){
+            attron(A_REVERSE);
+            printw("%s","CANCEL");
+            attroff(A_REVERSE);
+        }
+        else printw("%s","CANCEL");
+    }
   
     
     int ch = getch();
@@ -113,15 +205,27 @@ void UI::handleInput(bool &running,Alarms a){
                 currentMenu = 1;
             }
         }
-        // if (ch == '2'){
-        //     currentMenu = 2;
-        // }
-        
     }
-
     else if (currentMenu == 1){
-        if (ch == '5'){
-            currentMenu = 0;
+        if((ch == KEY_DOWN || ch == 'j')&&choice_menu_new<menu_new_size-2){ //-2 ker tist je ze v zadni vrsti
+            if (choice_menu_new == 2)choice_menu_new+=7;
+            else if (choice_menu_new>2 && choice_menu_new<9)choice_menu_new += 9-choice_menu_new;
+            else if (choice_menu_new == 9)choice_menu_new+=2;
+            else choice_menu_new++;
+        }
+        if ((ch == 'l' || ch == KEY_RIGHT)&&((choice_menu_new>=2 && choice_menu_new < 8)||choice_menu_new == 9||choice_menu_new == 11)&&choice_menu_new<menu_new_size-1){
+            choice_menu_new++;
+        }
+        if((ch == KEY_UP || ch == 'k')&&choice_menu_new > 0){
+            if (choice_menu_new == 11)choice_menu_new-=2;
+            else if (choice_menu_new > 2 && choice_menu_new <= 8)choice_menu_new -= choice_menu_new-1;
+            else if (choice_menu_new == 12)choice_menu_new -= 3;
+            else if (choice_menu_new == 10)choice_menu_new -= 8;
+            else if (choice_menu_new == 9)choice_menu_new-=7;
+            else choice_menu_new--;
+        }
+        if ((ch == KEY_LEFT || ch == 'h')&&((choice_menu_new>2 && choice_menu_new<= 8)||choice_menu_new==12||choice_menu_new == 10)&&choice_menu_new > 0){
+            choice_menu_new--;
         }
     }
     else if (currentMenu == 2){
