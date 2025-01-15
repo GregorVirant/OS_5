@@ -41,7 +41,7 @@ std::string Alarm::toString() const{
     for (auto day : days)
         dayStr+=" " + std::to_string(day)+"  ";
     std::stringstream ss;
-    ss<<title<<"\n"<< time.toString()<<"\n";
+    ss<<title<<" "<< time.toString()<<"\n";
     ss<<"SUN MON TUE WED THU FRI SAT\n"<<dayStr<<"\nRepeat:  "<<repeat<<"\nEnabled: "<<enabled;
     return ss.str();
 }

@@ -4,11 +4,14 @@
 #include <ncurses.h>
 #include <string>
 #include <vector>
+#include "Alarms.h"
 
 class UI {
 private:
     std::vector<std::string> menus;
     size_t currentMenu = 0;
+    size_t currentNew = 0;
+    size_t choice_menu_1 = 0;
     void updateMenu();
     // std::string menu;
     // std::string menuInput;
@@ -16,9 +19,7 @@ private:
 public:
     UI();
     ~UI();
-    void write(const std::string& message, int x, int y);
-    char getInput();
-    void handleInput(bool &running);
+    void handleInput(bool &running,Alarms a);
 };
 
 
