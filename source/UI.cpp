@@ -2,7 +2,7 @@
 #include <iostream>
 #include <sstream>
 
-UI::UI(){
+UI::UI():alarm("Alarm NEW",Time("12 00"),std::vector<bool>(7,0),false,false){
     initscr();
     cbreak();
     noecho();

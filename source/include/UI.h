@@ -13,10 +13,12 @@ private:
     size_t choice_menu_new = 0;
     size_t menu_new_size = 13;
     size_t choice_menu_1 = 0;
+    Alarm alarm;
+    //#Alarm newAlarm("Alarm NEW",Time("12 00"),std::vector<bool>(7,0),false,false);
 
     void updateMenu();
     // std::string menu;
-    // std::string menuInput;
+    // std::string menuInput;S
     // std::string menuOutput;
 public:
     UI();
