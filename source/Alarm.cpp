@@ -26,12 +26,21 @@ Alarm::Alarm(std::string alarm):days(7,false){
 
     time = Time(time1);
 
+    // std::stringstream ss1(days1);
+    // size_t num;
+    // while(ss1>>num){
+    //     if (num >= days.size()) throw std::invalid_argument("Invalid day value.");
+    //     days[num] = true;
+    // }
     std::stringstream ss1(days1);
-    size_t num;
-    while(ss1>>num){
-        if (num >= days.size()) throw std::invalid_argument("Invalid day value.");
-        days[num] = true;
+    for (size_t i = 0; i<days.size();i++){
+        int val;
+        if(!(ss1>>val) || (val != 0 && val != 1)){
+            throw std::invalid_argument("Days  must contain only 0 or 1 in the DB.");
+        }
+        days[i] = val;
     }
+
     std::stringstream ss2(args);
     if (!(ss2>>repeat))throw std::invalid_argument("Event is missing repeat.");
     if (!(ss2>>enabled))throw std::invalid_argument("Event is missing enabled.");

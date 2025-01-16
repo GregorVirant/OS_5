@@ -60,7 +60,12 @@ void UI::updateMenu(){
     mvprintw(1,0,"%s", menus[currentMenu].c_str());
     refresh();
 }
-void UI::handleInput(bool &running,Alarms a){
+void UI::redoMenuNew(){
+    choice_menu_new = 0;
+    Alarm a("Alarm NEW",Time("12 00"),std::vector<bool>(7,0),false,false);
+    alarm = a;
+}
+void UI::handleInput(bool &running,Alarms &a,const std::string &path){
     scrollok(stdscr, TRUE);
     //scrl(5);
     //scrollok(stdscr, FALSE);
@@ -107,17 +112,25 @@ void UI::handleInput(bool &running,Alarms a){
 
         if (choice_menu_new == 0){
             attron(A_REVERSE);
-            mvprintw(4,0,"%s","Title: \n\n");
+            mvprintw(4,0,"%s","Title: ");
+            printw("%s",(alarm.title+"\n\n").c_str());
             attroff(A_REVERSE);
         }
-        else mvprintw(4,0,"%s","Title: \n\n");
+        else {
+            mvprintw(4,0,"%s","Title: ");
+            printw("%s",(alarm.title+"\n\n").c_str());
+        }
 
         if (choice_menu_new == 1){
             attron(A_REVERSE);
-            printw("%s","Time: \n\n");
+            printw("%s","Time: ");
+            printw("%s",(alarm.time.toString()+"\n\n").c_str());
             attroff(A_REVERSE);
         }
-        else printw("%s","Time: \n\n");
+        else {
+            printw("%s","Time: ");
+            printw("%s",(alarm.time.toString()+"\n\n").c_str());
+        }
 
         if (choice_menu_new == 2){
             attron(A_REVERSE);
@@ -227,6 +240,20 @@ void UI::handleInput(bool &running,Alarms a){
         if ((ch == KEY_LEFT || ch == 'h')&&((choice_menu_new>2 && choice_menu_new<= 8)||choice_menu_new==12||choice_menu_new == 10)&&choice_menu_new > 0){
             choice_menu_new--;
         }
+        if(ch == KEY_ENTER || ch == 10){
+            if (choice_menu_new >= 2 && choice_menu_new <= 8){
+                alarm.days[choice_menu_new-2] = not alarm.days[choice_menu_new-2];
+            }
+            if (choice_menu_new == 11){ //SAVE
+                currentMenu = 0;
+                a.addAlarm(alarm,path);
+                redoMenuNew();
+            }
+            if (choice_menu_new == 12){ //CANCEL
+                currentMenu = 0;
+                redoMenuNew();
+            }
+        } 
     }
     else if (currentMenu == 2){
         if (ch == '5'){

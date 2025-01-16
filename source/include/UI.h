@@ -23,7 +23,8 @@ private:
 public:
     UI();
     ~UI();
-    void handleInput(bool &running,Alarms a);
+    void redoMenuNew();
+    void handleInput(bool &running,Alarms &a,const std::string &path);
 };
 
 

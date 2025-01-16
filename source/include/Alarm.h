@@ -8,13 +8,13 @@
 #include "Time.h"
 
 class Alarm{
-private:
+public:
     std::string title;
     Time time;
     std::vector <bool> days;
     bool repeat;
     bool enabled;
-public:
+
     Alarm(std::string title,Time time,std::vector <bool> days,bool repeat,bool enabled);
     Alarm(std::string alarm);
     std::string toString() const;

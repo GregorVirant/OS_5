@@ -25,7 +25,7 @@ int main() {
     UI ui;
     bool run = true;
     while(run){
-        ui.handleInput(run,a);
+        ui.handleInput(run,a,"DB");
     }
     // //cout<<a.toString();
     // a.writeToFile("DB"); 
