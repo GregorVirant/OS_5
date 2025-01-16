@@ -119,16 +119,22 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
         }
         else {
             mvprintw(4,0,"%s","Title: ");
-            if (!writingTitle) 
-                printw("%s",(alarm.title).c_str());
-            else 
-                printw("%s",writingStringTitle.c_str());
+            printw("%s",(alarm.title).c_str());
         }
         printw("%s","\n\n");
         if (choice_menu_new == 1){
             attron(A_REVERSE);
-            printw("%s","Time:  ");
-            printw("%s",(alarm.time.toStringForWriting()+"\n\n").c_str());
+            if (!writingTime){
+                printw("%s","Time:  ");
+                printw("%s",(alarm.time.toStringForWriting()+"\n\n").c_str());
+            }
+            else {
+                attroff(A_REVERSE);
+                attron(A_BOLD);
+                printw("%s","Time:  ");
+                printw("%s",(writingStringTime+"\n\n").c_str());
+                attroff(A_BOLD);
+            }
             attroff(A_REVERSE);
         }
         else {
@@ -264,7 +270,7 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
   
     
     int ch = getch();
-    if (ch == 'q' || (currentMenu == 0 && ch == '4')){
+    if (ch == 'q' && !(writingTime || writingTitle)){
         running = false;
         return;
     }
@@ -303,6 +309,32 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
             updateMenu();
             return;
         }
+        if (writingTime){
+            if(ch == KEY_ENTER || ch == 10){
+                writingTime = false;
+                try{
+                    alarm.time = Time(writingStringTime); ///////////CATCH ERROR
+                }
+                catch (std::exception &e){
+                    mvprintw(0,0,"%s","\nTime input should be  in format hh mm");
+                }
+                writingStringTime = "";
+            }
+            else if(ch == 27){
+                writingTime = false;
+                writingStringTime = "";
+            }
+            else if(isprint(ch)){
+                writingStringTime += ch;
+            }
+            else if (ch == KEY_BACKSPACE || ch == 127){
+                if(!writingStringTime.empty()){
+                    writingStringTime.pop_back();
+                }
+            }
+            updateMenu();
+            return;
+        }
         if((ch == KEY_DOWN || ch == 'j')&&choice_menu_new<menu_new_size-2){ //-2 ker tist je ze v zadni vrsti
             if (choice_menu_new == 2)choice_menu_new+=7;
             else if (choice_menu_new>2 && choice_menu_new<9)choice_menu_new += 9-choice_menu_new;
@@ -326,6 +358,9 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
         if(ch == KEY_ENTER || ch == 10){
             if (choice_menu_new == 0){
                 writingTitle = true;
+            }
+            if (choice_menu_new == 1){
+                writingTime = true;
             }
             if (choice_menu_new >= 2 && choice_menu_new <= 8){
                 alarm.days[choice_menu_new-2] = not alarm.days[choice_menu_new-2];
