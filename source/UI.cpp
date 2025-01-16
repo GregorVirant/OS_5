@@ -285,7 +285,6 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
         return;
     }
     if (ch == 'h' && currentMenu == 0){
-        beforeHelp = currentMenu;
         currentMenu = 3;
         updateMenu();
         return;
@@ -403,22 +402,6 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
             }
         } 
     }
-        //     if ((ch == KEY_DOWN || ch == 'j')&&choice_menu_1<a.alarmList.size()){
-        //     choice_menu_1++;
-        // }
-        // if ((ch == KEY_UP || ch == 'k')&&choice_menu_1 > 0){
-        //     choice_menu_1--;
-        // }
-        // if((ch == KEY_ENTER || ch == 10)){
-        //     if (choice_menu_1 == 0){
-        //         currentMenu = 1;
-        //     }
-        //     else{
-        //         indexOfAlarm = choice_menu_1 - 1;
-        //         currentMenu = 2;
-        //         updateMenu();
-        //     }
-        // }
     else if (currentMenu == 2){
         if((ch == KEY_RIGHT || ch == 'l')&&choice_menu_change<2){
             choice_menu_change++;
@@ -434,18 +417,19 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
                 currentMenu = 0;
                 a.deleteAlarm(indexOfAlarm,path);
                 choice_menu_1 = 0;
+                choice_menu_change = 0;
             }
             else if (choice_menu_change == 2){
                 currentMenu = 0;
                 alarmUnderUpdate.enabled = not alarmUnderUpdate.enabled;
                 a.updateAlarm(indexOfAlarm,path,alarmUnderUpdate);
+                choice_menu_change = 0;
             }
         }
     }
     else if (currentMenu == 3){
         if(ch == KEY_ENTER || ch == 10){
-            currentMenu = beforeHelp;
-            return;
+            currentMenu = 0;
         }
     }
 

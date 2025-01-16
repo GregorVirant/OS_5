@@ -15,7 +15,6 @@ private:
     size_t choice_menu_1 = 0;
     Alarm alarm;
 
-    int beforeHelp = 0;
 
     bool writingTitle = false;
     std::string writingStringTitle = "";
