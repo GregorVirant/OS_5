@@ -12,37 +12,35 @@ UI::UI():alarm("Alarm NEW",Time("12 00"),std::vector<bool>(7,0),false,false){
     refresh();
 
     std::stringstream ss;
-    ss<<"Gregas alarm sercvice:\n\n";
-    // ss<<"Chose intput/output:\n";
-    // ss<<"  1 => input\n";
-    // ss<<"  2 => output\n";
-    // ss<<"  3 => mixer\n";
-    // ss<<"  4 => go back\n";
-    // ss<<"  q => exit   \n";
+    ss<<"Gregas alarm sercvice:\n";
+    ss<<"q-quit  h-help\n\n";
     menus.push_back(ss.str());
     ss.str("");
     ss.clear();
+
     std::cout<<ss.str()<<"\n";
     ss<<"Gregas alarm sercvice:\n";
-    ss<<"Creating new alarm.\n";
-    // ss<<"Input volume:\n";
-    // ss<<"  1 => increase by 10%\n";
-    // ss<<"  2 => decrese by 10%\n";
-    // ss<<"  3 => set to ...\n";    
-    // ss<<"  4 => input devices\n";
-    // ss<<"  5 => go back\n";
-    // ss<<"  q => exit   \n";
+    ss<<"q-quit  h-help\n";
+    ss<<"Creating new alarm.\n\n";
     menus.push_back(ss.str());
     ss.str("");
     ss.clear();
-    ss<<"Gregas volume maneger:\n\n";
-    ss<<"Output volume:\n";
-    ss<<"  1 => increase by 10%\n";
-    ss<<"  2 => decrese by 10%\n";
-    ss<<"  3 => set to ...\n";    
-    ss<<"  4 => output devices\n";
-    ss<<"  5 => go back\n";
-    ss<<"  q => exit   \n";
+
+    ss<<"Gregas alarm sercvice:\n\n";
+    ss<<"q-quit  h-help\n";
+    ss<<"Alarm:\n";
+    menus.push_back(ss.str());
+    ss.str("");
+    ss.clear();
+
+    ss<<"Gregas alarm sercvice:\n\n";
+    ss<<"HELP:\n";
+    ss<<"q-quit\n";
+    ss<<"When lunching the app a menu will show up, you can navigate the menu using arrows on keyboard or vim keybinds (hjkl). To confirm the choice you click ENTER. ";
+    ss<<"There are two things you can do, you can select \"NEW ALARM\" button to bring up a menu for creating a new alarm. The other option is to select an existing ";
+    ss<<"alarm. After doing that a menu with 2 options will be displayed. One is to delete the alarm the other one is for activation/deactiovation.\n\nFor choosing a name ";
+    ss<<"you will enter input mode in which you can only add/remove letters to exit it you can either click enter for confirming new name and escape to exit this menu reeverting to the previous state.\n";
+
     menus.push_back(ss.str());
     ss.str("");
     ss.clear();
@@ -67,8 +65,6 @@ void UI::redoMenuNew(){
 }
 void UI::handleInput(bool &running,Alarms &a,const std::string &path){
     scrollok(stdscr, TRUE);
-    //scrl(5);
-    //scrollok(stdscr, FALSE);
     if (currentMenu == 0){
         if (choice_menu_1 > a.alarmList.size()){
             std::cout<<"NAPAKA: poskusamo posegati zunaj polja alarmLIst";
@@ -99,7 +95,7 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
         //a.alarmList
         //printw("%s",a.toString().c_str());
     }
-    if (currentMenu == 1){
+    else if (currentMenu == 1){
         scrollok(stdscr, FALSE);
         if (choice_menu_new == 0){
             attron(A_REVERSE);
@@ -267,11 +263,21 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
         }
         else printw("%s","CANCEL");
     }
-  
+    else if (currentMenu == 3){
+        attron(A_REVERSE);
+        printw("%s","BACK");
+        attroff(A_REVERSE);
+    }
     
     int ch = getch();
     if (ch == 'q' && !(writingTime || writingTitle)){
         running = false;
+        return;
+    }
+    if (ch == 'h' && !(writingTime || writingTitle)){
+        beforeHelp = currentMenu;
+        currentMenu = 3;
+        updateMenu();
         return;
     }
     if (currentMenu == 0){
@@ -382,11 +388,13 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
             }
         } 
     }
-    else if (currentMenu == 2){
-        if (ch == '5'){
-            currentMenu = 0;
+    else if (currentMenu == 3){
+        if(ch == KEY_ENTER || ch == 10){
+            currentMenu = beforeHelp;
+            return;
         }
     }
+
     updateMenu();
 }
 
