@@ -2,7 +2,7 @@
 #include <iostream>
 #include <sstream>
 
-UI::UI():alarm("Alarm NEW",Time("12 00"),std::vector<bool>(7,0),false,false){
+UI::UI():alarm("Alarm NEW",Time("12 00"),std::vector<bool>(7,0),false,false),alarmUnderUpdate("Alarm NEW",Time("12 00"),std::vector<bool>(7,0),false,false){
     initscr();
     cbreak();
     noecho();
@@ -20,15 +20,12 @@ UI::UI():alarm("Alarm NEW",Time("12 00"),std::vector<bool>(7,0),false,false){
 
     std::cout<<ss.str()<<"\n";
     ss<<"Gregas alarm sercvice:\n";
-    ss<<"q-quit  h-help\n";
     ss<<"Creating new alarm.\n\n";
     menus.push_back(ss.str());
     ss.str("");
     ss.clear();
 
-    ss<<"Gregas alarm sercvice:\n\n";
-    ss<<"q-quit  h-help\n";
-    ss<<"Alarm:\n";
+    ss<<"Gregas alarm sercvice:\n";
     menus.push_back(ss.str());
     ss.str("");
     ss.clear();
@@ -91,9 +88,6 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
                 printw("%s",(a.alarmList[i].toString()+"\n\n").c_str());
             attroff(A_REVERSE);
         }
-        //move(choice_menu_1*5,0);
-        //a.alarmList
-        //printw("%s",a.toString().c_str());
     }
     else if (currentMenu == 1){
         scrollok(stdscr, FALSE);
@@ -263,6 +257,22 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
         }
         else printw("%s","CANCEL");
     }
+    else if (currentMenu == 2){
+        alarmUnderUpdate = a.alarmList[indexOfAlarm];
+        printw("%s",(alarmUnderUpdate.toString()+"\n").c_str());
+
+        if (choice_menu_change == 0) attron(A_REVERSE);
+        printw("%s","BACK");
+        attroff(A_REVERSE);
+        printw("%s","  ");
+        if (choice_menu_change == 1) attron(A_REVERSE);
+        printw("%s","DELETE");
+        attroff(A_REVERSE);
+        printw("%s","  ");
+        if (choice_menu_change == 2) attron(A_REVERSE);
+        printw("%s","ENABLE/DISABLE");
+        attroff(A_REVERSE);
+    }
     else if (currentMenu == 3){
         attron(A_REVERSE);
         printw("%s","BACK");
@@ -274,7 +284,7 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
         running = false;
         return;
     }
-    if (ch == 'h' && !(writingTime || writingTitle)){
+    if (ch == 'h' && currentMenu == 0){
         beforeHelp = currentMenu;
         currentMenu = 3;
         updateMenu();
@@ -290,6 +300,11 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
         if((ch == KEY_ENTER || ch == 10)){
             if (choice_menu_1 == 0){
                 currentMenu = 1;
+            }
+            else{
+                indexOfAlarm = choice_menu_1 - 1;
+                currentMenu = 2;
+                updateMenu();
             }
         }
     }
@@ -388,6 +403,45 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
             }
         } 
     }
+        //     if ((ch == KEY_DOWN || ch == 'j')&&choice_menu_1<a.alarmList.size()){
+        //     choice_menu_1++;
+        // }
+        // if ((ch == KEY_UP || ch == 'k')&&choice_menu_1 > 0){
+        //     choice_menu_1--;
+        // }
+        // if((ch == KEY_ENTER || ch == 10)){
+        //     if (choice_menu_1 == 0){
+        //         currentMenu = 1;
+        //     }
+        //     else{
+        //         indexOfAlarm = choice_menu_1 - 1;
+        //         currentMenu = 2;
+        //         updateMenu();
+        //     }
+        // }
+    else if (currentMenu == 2){
+        if((ch == KEY_RIGHT || ch == 'l')&&choice_menu_change<2){
+            choice_menu_change++;
+        }
+        if ((ch == KEY_LEFT || ch == 'h')&&choice_menu_change > 0){
+            choice_menu_change--;
+        }
+        if (ch == KEY_ENTER || ch == 10){
+            if (choice_menu_change == 0){
+                currentMenu = 0;
+            }
+            else if (choice_menu_change == 1){
+                currentMenu = 0;
+                a.deleteAlarm(indexOfAlarm,path);
+                choice_menu_1 = 0;
+            }
+            else if (choice_menu_change == 2){
+                currentMenu = 0;
+                alarmUnderUpdate.enabled = not alarmUnderUpdate.enabled;
+                a.updateAlarm(indexOfAlarm,path,alarmUnderUpdate);
+            }
+        }
+    }
     else if (currentMenu == 3){
         if(ch == KEY_ENTER || ch == 10){
             currentMenu = beforeHelp;
@@ -397,12 +451,3 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
 
     updateMenu();
 }
-
-// void UI::write(const std::string& message, int x, int y) {
-//     mvprintw(y, x, "%s", message.c_str());
-//     refresh();
-// }
-
-// char UI::getInput() {
-//     return getch();
-// }

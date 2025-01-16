@@ -10,6 +10,8 @@ Time::Time(std::string str){
     if (!(ss>>minutes)){
         throw std::invalid_argument("Napaka pri branju minut.");
     }
+    if (hours < 0 || hours > 23) throw std::invalid_argument("Napaka: nevalidne ure.");
+    if (minutes < 0 || minutes > 59) throw std::invalid_argument("Napaka: nevalidne minute.");
 }
 bool Time::isLaterOrEqualThan(Time t1){
     if (hours < t1.hours) return false;

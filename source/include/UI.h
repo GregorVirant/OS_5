@@ -22,12 +22,11 @@ private:
     bool writingTime = false;
     std::string writingStringTime = "";
 
-    //#Alarm newAlarm("Alarm NEW",Time("12 00"),std::vector<bool>(7,0),false,false);
+    size_t choice_menu_change = 0;
+    size_t indexOfAlarm = 0; //alarm being updated
+    Alarm alarmUnderUpdate;
 
     void updateMenu();
-    // std::string menu;
-    // std::string menuInput;S
-    // std::string menuOutput;
 public:
     UI();
     ~UI();
