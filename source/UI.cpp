@@ -133,47 +133,94 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
         }
 
         if (choice_menu_new == 2){
+            if (alarm.days[0])attron(A_UNDERLINE); 
             attron(A_REVERSE);
-            printw("%s","SUN  ");
+            printw("%s","SUN");
             attroff(A_REVERSE);
         }
-        else printw("%s","SUN  ");
+        else {
+            if (alarm.days[0])attron(A_UNDERLINE); 
+            printw("%s","SUN");
+        }
+        attroff(A_UNDERLINE); 
+        printw("%s","  ");
+
         if (choice_menu_new == 3){
+            if (alarm.days[1])attron(A_UNDERLINE); 
             attron(A_REVERSE);
-            printw("%s","MON  ");
+            printw("%s","MON");
             attroff(A_REVERSE);
         }
-        else printw("%s","MON  ");
+        else {
+            if (alarm.days[1])attron(A_UNDERLINE); 
+            printw("%s","MON");
+        }
+        attroff(A_UNDERLINE); 
+        printw("%s","  ");
+
         if (choice_menu_new == 4){
+            if (alarm.days[2])attron(A_UNDERLINE); 
             attron(A_REVERSE);
-            printw("%s","TUE  ");
+            printw("%s","TUE");
             attroff(A_REVERSE);
         }
-        else printw("%s","TUE  ");
+        else {
+            if (alarm.days[2])attron(A_UNDERLINE); 
+            printw("%s","TUE");
+        }
+        attroff(A_UNDERLINE);
+        printw("%s","  ");
+
         if (choice_menu_new == 5){
+            if (alarm.days[3])attron(A_UNDERLINE); 
             attron(A_REVERSE);
-            printw("%s","WED  ");
+            printw("%s","WED");
             attroff(A_REVERSE);
         }
-        else printw("%s","WED  ");
+        else {
+            if (alarm.days[3])attron(A_UNDERLINE); 
+            printw("%s","WED");
+        }
+        attroff(A_UNDERLINE); 
+        printw("%s","  ");
+
         if (choice_menu_new == 6){
+            if (alarm.days[4])attron(A_UNDERLINE); 
             attron(A_REVERSE);
-            printw("%s","THU  ");
+            printw("%s","THU");
             attroff(A_REVERSE);
         }
-        else printw("%s","THU  ");
+        else {
+            if (alarm.days[4])attron(A_UNDERLINE); 
+            printw("%s","THU");
+        }
+        attroff(A_UNDERLINE); 
+        printw("%s","  ");
+
         if (choice_menu_new == 7){
+            if (alarm.days[5])attron(A_UNDERLINE); 
             attron(A_REVERSE);
-            printw("%s","FRI  ");
+            printw("%s","FRI");
             attroff(A_REVERSE);
         }
-        else printw("%s","FRI  ");
+        else {
+            if (alarm.days[5])attron(A_UNDERLINE); 
+            printw("%s","FRI");
+        }
+        attroff(A_UNDERLINE); 
+        printw("%s","  ");
+
         if (choice_menu_new == 8){
+            if (alarm.days[6])attron(A_UNDERLINE); 
             attron(A_REVERSE);
             printw("%s","SAT\n\n");
             attroff(A_REVERSE);
         }
-        else printw("%s","SAT\n\n");
+        else {
+            if (alarm.days[6])attron(A_UNDERLINE); 
+            printw("%s","SAT\n\n");
+        }
+        attroff(A_UNDERLINE); 
         if (choice_menu_new == 9){
             attron(A_REVERSE);
             printw("%s","REAPEAT   ");
