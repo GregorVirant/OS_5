@@ -123,13 +123,13 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
 
         if (choice_menu_new == 1){
             attron(A_REVERSE);
-            printw("%s","Time: ");
-            printw("%s",(alarm.time.toString()+"\n\n").c_str());
+            printw("%s","Time:  ");
+            printw("%s",(alarm.time.toStringForWriting()+"\n\n").c_str());
             attroff(A_REVERSE);
         }
         else {
-            printw("%s","Time: ");
-            printw("%s",(alarm.time.toString()+"\n\n").c_str());
+            printw("%s","Time:  ");
+            printw("%s",(alarm.time.toStringForWriting()+"\n\n").c_str());
         }
 
         if (choice_menu_new == 2){
@@ -223,16 +223,27 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
         attroff(A_UNDERLINE); 
         if (choice_menu_new == 9){
             attron(A_REVERSE);
-            printw("%s","REAPEAT   ");
+            if (alarm.repeat) attron(A_UNDERLINE);
+            printw("%s","REAPEAT");
             attroff(A_REVERSE);
         }
-        else printw("%s","REAPEAT   ");
+        else {
+            if (alarm.repeat) attron(A_UNDERLINE);
+            printw("%s","REAPEAT");
+        }
+        attroff(A_UNDERLINE);
+        printw("%s","   ");
         if (choice_menu_new == 10){
+            if (alarm.enabled) attron(A_UNDERLINE);
             attron(A_REVERSE);
             printw("%s","ENABLED\n\n");
             attroff(A_REVERSE);
         }
-        else printw("%s","ENABLED\n\n");
+        else {
+            if (alarm.enabled) attron(A_UNDERLINE);
+            printw("%s","ENABLED\n\n");
+        }
+        attroff(A_UNDERLINE);
         if (choice_menu_new == 11){
             attron(A_REVERSE);
             printw("%s","SAVE   ");
@@ -290,6 +301,12 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
         if(ch == KEY_ENTER || ch == 10){
             if (choice_menu_new >= 2 && choice_menu_new <= 8){
                 alarm.days[choice_menu_new-2] = not alarm.days[choice_menu_new-2];
+            }
+            if (choice_menu_new == 9){
+                alarm.repeat = not alarm.repeat;
+            }
+            if (choice_menu_new == 10){
+                alarm.enabled = not alarm.enabled;                
             }
             if (choice_menu_new == 11){ //SAVE
                 currentMenu = 0;
