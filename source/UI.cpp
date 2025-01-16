@@ -101,26 +101,30 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
     }
     if (currentMenu == 1){
         scrollok(stdscr, FALSE);
-        
-        /*    
-        std::string title;
-        Time time;
-        std::vector <bool> days;
-        bool repeat;
-        bool enabled;
-        */
-
         if (choice_menu_new == 0){
             attron(A_REVERSE);
-            mvprintw(4,0,"%s","Title: ");
-            printw("%s",(alarm.title+"\n\n").c_str());
+            
+            if (!writingTitle){
+                mvprintw(4,0,"%s","Title: ");
+                printw("%s",(alarm.title).c_str());
+            }
+            else {
+                attroff(A_REVERSE);
+                attron(A_BOLD);
+                mvprintw(4,0,"%s","Title: ");
+                printw("%s",writingStringTitle.c_str());
+                attroff(A_BOLD);
+            }
             attroff(A_REVERSE);
         }
         else {
             mvprintw(4,0,"%s","Title: ");
-            printw("%s",(alarm.title+"\n\n").c_str());
+            if (!writingTitle) 
+                printw("%s",(alarm.title).c_str());
+            else 
+                printw("%s",writingStringTitle.c_str());
         }
-
+        printw("%s","\n\n");
         if (choice_menu_new == 1){
             attron(A_REVERSE);
             printw("%s","Time:  ");
@@ -278,6 +282,27 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
         }
     }
     else if (currentMenu == 1){
+        if (writingTitle){
+            if(ch == KEY_ENTER || ch == 10){
+                writingTitle = false;
+                alarm.title = writingStringTitle;
+                writingStringTitle = "";
+            }
+            else if(ch == 27){
+                writingTitle = false;
+                writingStringTitle = "";
+            }
+            else if(isprint(ch)){
+                writingStringTitle += ch;
+            }
+            else if (ch == KEY_BACKSPACE || ch == 127){
+                if(!writingStringTitle.empty()){
+                    writingStringTitle.pop_back();
+                }
+            }
+            updateMenu();
+            return;
+        }
         if((ch == KEY_DOWN || ch == 'j')&&choice_menu_new<menu_new_size-2){ //-2 ker tist je ze v zadni vrsti
             if (choice_menu_new == 2)choice_menu_new+=7;
             else if (choice_menu_new>2 && choice_menu_new<9)choice_menu_new += 9-choice_menu_new;
@@ -299,6 +324,9 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
             choice_menu_new--;
         }
         if(ch == KEY_ENTER || ch == 10){
+            if (choice_menu_new == 0){
+                writingTitle = true;
+            }
             if (choice_menu_new >= 2 && choice_menu_new <= 8){
                 alarm.days[choice_menu_new-2] = not alarm.days[choice_menu_new-2];
             }

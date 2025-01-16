@@ -16,7 +16,9 @@ private:
     Alarm alarm;
 
     bool writingTitle = false;
+    std::string writingStringTitle = "";
     bool writingTime = false;
+    std::string writingStringTime = "";
 
     //#Alarm newAlarm("Alarm NEW",Time("12 00"),std::vector<bool>(7,0),false,false);
 
