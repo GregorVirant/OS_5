@@ -423,6 +423,7 @@ void UI::handleInput(bool &running,Alarms &a,const std::string &path){
                 currentMenu = 0;
                 alarmUnderUpdate.enabled = not alarmUnderUpdate.enabled;
                 a.updateAlarm(indexOfAlarm,path,alarmUnderUpdate);
+                choice_menu_1 = 0;
                 choice_menu_change = 0;
             }
         }

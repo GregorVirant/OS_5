@@ -10,7 +10,7 @@ LDFLAGS = -lncurses
 # Makefile settings - Can be customized.
 APPNAME = galarm
 EXT = .cpp
-SRCDIR = source
+SRCDIR = src
 OBJDIR = obj
 
 ############## Do not change anything from here downwards! #############
