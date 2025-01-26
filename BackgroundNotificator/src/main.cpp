@@ -9,10 +9,11 @@ void send_notification(std::string title, std::string body){
     system(notify_str.c_str());
 }
 int main() {
+    std::string db_path = "../DB";
     while (true){
         Alarms alarms;
         try{
-            alarms = Alarms("../DB");
+            alarms = Alarms(db_path);
         }
         catch (std::exception &e){
             std::cerr<<"DB reading error: " << e.what()<<"\n";
@@ -34,7 +35,7 @@ int main() {
                 send_notification("ALARM:",a1.title);
                 if (!a1.repeat){
                     a1.enabled = false;
-                    alarms.updateAlarm(i, "../DB", a1);
+                    alarms.updateAlarm(i, db_path, a1);
                 }
             }
         }

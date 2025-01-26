@@ -3,10 +3,11 @@
 using namespace std;
 
 int main() {
-    Alarms a("../DB");
+    std::string db_path = "../DB";
+    Alarms a(db_path);
     UI ui;
     bool run = true;
     while(run){
-        ui.handleInput(run,a,"../DB");
+        ui.handleInput(run,a,db_path);
     }
 }
