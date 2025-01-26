@@ -6,7 +6,6 @@
 #include "Alarm.h"
 
 class Alarms{
-private: 
 public:
     std::vector<Alarm> alarmList;
     Alarms();
@@ -19,15 +18,6 @@ public:
     //updateAlarm(size_t index, std::string path,Alarm newAlarm) replaces alarm in our vector and also updates 4 lines that belong to it in file
     void addAlarm(std::string alarmString);
     std::string toString() const;
-
-    //write new
-
-
-    // std::string toStringForWriting() const;
-    // bool writeToFile(std::string path) const;
-    //Write new alarm at the end of the file
-    //Override one alarm (string path, size_t alarmIndex,Alarm a)  read from file and then write only one alarm
-    //
 };
 
 #endif

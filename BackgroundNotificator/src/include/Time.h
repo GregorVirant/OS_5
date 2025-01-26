@@ -13,7 +13,7 @@ public:
     Time():hours(0),minutes(0),seconds(0){}
     Time(int hours,int minutes);
     Time(std::string str);
-    bool isLaterOrEqualThan(Time t1);
+    bool isEqual(Time t1);
     std::string toString() const;
     std::string toStringForWriting() const;
 };

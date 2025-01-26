@@ -206,34 +206,3 @@ bool Alarms::updateAlarm(size_t index, std::string path, Alarm newAlarm){
     close(fd);
     return true;
 }
-
-// std::string Alarms::toStringForWriting() const{
-//     std::string out;
-//     for (auto event : alarmList){
-//         out += event.toStringForWriting() + "\n";
-//     }
-//     return out;
-// }
-// bool Alarms::writeToFile(std::string path) const{
-//     int fd = open(path.c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0644);
-//     if (fd == -1){
-//         std::cerr<<"Error opening the file. \n";
-//         return false;
-//     }
-//     if (flock(fd, LOCK_EX) == -1){
-//         std::cerr << "Error locking the file.";
-//         close(fd);
-//         return false;
-//     }
-//     auto str = toStringForWriting();
-//     auto res = write(fd,str.c_str(),str.size());
-//     if (res == -1){
-//         std::cerr<<"Error writing to file.";
-//         flock(fd, LOCK_UN);
-//         close(fd);
-//         return false;
-//     }
-//     flock(fd,LOCK_UN);
-//     close(fd);
-//     return true;
-// }

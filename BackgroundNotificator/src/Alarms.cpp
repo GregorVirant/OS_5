@@ -8,12 +8,14 @@ Alarms::Alarms(){}
 Alarms::Alarms(std::string path){
     int fd = open(path.c_str(),O_RDONLY);
     if (fd == -1){
-        std::cerr<<"Error openning file for reading\n";
+        //std::cerr<<"The db currently doesnt exist.\n";
+        throw std::invalid_argument("DB doesnt exist yet.");
         return;
     }
     if (flock(fd,LOCK_SH) == -1){
-        std::cerr<<"Error locking file.\n";
+        //std::cerr<<"Error locking file.\n";
         close(fd);
+        throw std::invalid_argument("There is a problem with the DB");
         return;
     }
     std::ifstream file(path);

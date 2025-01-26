@@ -19,11 +19,6 @@ public:
     Alarm(std::string alarm);
     std::string toString() const;
     std::string toStringForWriting() const;
-    bool isItToday(int today); ////////////////////////////////////
-    bool shouldTrigger(); //check time and if its today and if enabled ////////////////////////////////////
-    void callOnTrigger(); //removes current day if not set to reapeating ////////////////////////////////////
-
-    //MAYBE FIRSTTRIGGER
 };
 
 #endif
