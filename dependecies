@@ -1,7 +1,5 @@
 Ncurses
-sudo apt-get install libncurses5-dev
+Ubuntu/debian: sudo apt-get install libncurses5-dev
 
 Notify-send
 Ubuntu/debian: sudo apt-get install libnotify-bin
-Fedora: sudo dnf install libnotify
-Arch: sudo pacman -S libnotify
