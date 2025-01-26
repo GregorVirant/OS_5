@@ -5,7 +5,8 @@
 
 using namespace std;
 void send_notification(std::string title, std::string body){
-    std::string notify_str = "notify-send " + title + " " + body;
+    std::string notify_str = "notify-send \"" + title + "\" \"" + body + "\"";
+    //std::cout<<notify_str<<std::endl;
     system(notify_str.c_str());
 }
 int main() {
@@ -30,8 +31,8 @@ int main() {
 
         for (size_t i = 0; i< alarms.alarmList.size(); i++){
             if (alarms.alarmList[i].days[current_day] && alarms.alarmList[i].time.isEqual(Time(current_hour,current_minute))){
-                std::cerr << "Trigering alarm" << std::endl;
                 Alarm a1(alarms.alarmList[i]);
+                std::cerr << "ALARM TRIGGERED: "<<a1.title << std::endl;
                 send_notification("ALARM:",a1.title);
                 if (!a1.repeat){
                     a1.enabled = false;
